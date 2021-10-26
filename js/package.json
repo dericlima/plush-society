@@ -13,7 +13,8 @@
   "scripts": {
     "bootstrap": "lerna link && lerna bootstrap",
     "build": "lerna run build",
-    "start": "cross-env CI=true lerna run start --scope @oyster/common --stream --parallel --scope web",
+    "start": "cross-env CI=true lerna run start --scope @oyster/common --stream --parallel --scope webvue",
+    "start": "cross-env CI=true lerna run start --scope @oyster/common --stream --parallel --scope webvue",
     "lint": "prettier -c 'packages/*/{src,test}/**/*.ts' && npm run lint:eslint",
     "lint:eslint": "eslint 'packages/*/{src,test}/**/*.ts'",
     "lint:fix": "prettier --write 'packages/*/{src,test}/**/*.{ts,tsx}' && eslint --fix 'packages/*/{src,test}/**/*.ts'",
