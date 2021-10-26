@@ -1,6 +1,6 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <img alt="Vue logo" src="./assets/plush1.jpg">
+  <HelloWorld msg="Welcome to the Plush Society"/>
 </template>
 
 <script>
