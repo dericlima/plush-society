@@ -2,6 +2,6 @@
   "name": "plush-society",
   "version": "1.0.0",
   "scripts": {
-    "install": "cd js/packages/webvue && yarn install"
+    "install": "cd js/packages/webvue && npm install"
   }
 }
