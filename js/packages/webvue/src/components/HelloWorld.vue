@@ -6,10 +6,22 @@
 </template>
 
 <script>
+import {WalletConnectButton} from "@solana/wallet-adapter-vue-ui";
+import {WalletMultiButton} from "@solana/wallet-adapter-vue-ui";
+import {WalletProvider} from "@solana/wallet-adapter-vue";
+import {WalletModal} from "@oyster/common";
 export default {
   name: 'HelloWorld',
+  components: {
+    WalletConnectButton,
+    WalletMultiButton,
+    WalletProvider,
+    WalletModal
+  },
   props: {
     msg: String
+  },
+  setup(props) {
   }
 }
 </script>
