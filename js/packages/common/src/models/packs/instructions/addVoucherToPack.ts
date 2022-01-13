@@ -4,21 +4,20 @@ import {
   SYSVAR_RENT_PUBKEY,
   SystemProgram,
 } from '@solana/web3.js';
-import BN from 'bn.js';
 import { serialize } from 'borsh';
 
 import { TokenAccount } from '../..';
 import {
   AddVoucherToPackArgs,
-  findPackVoucherProgramAddress,
   getEdition,
   getMetadata,
   PACKS_SCHEMA,
 } from '../../..';
 import { StringPublicKey, programIds, toPublicKey } from '../../../utils';
+import { findPackVoucherProgramAddress } from '../find';
 
 interface Params {
-  index: BN;
+  index: number;
   packSetKey: PublicKey;
   authority: StringPublicKey;
   mint: StringPublicKey;

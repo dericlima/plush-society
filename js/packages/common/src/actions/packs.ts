@@ -1,67 +1,11 @@
 import BN from 'bn.js';
-import { PublicKey } from '@solana/web3.js';
-import { programIds } from '../utils/programIds';
-import { findProgramAddress, StringPublicKey, toPublicKey } from '../utils';
 import { PackDistributionType } from '../models/packs/types';
 import {
   AddCardToPackParams,
   InitPackSetParams,
+  RequestCardToRedeemParams,
+  ClaimPackParams,
 } from '../models/packs/interface';
-
-export const PACKS_PREFIX = 'packs';
-export const CARD_PREFIX = 'card';
-export const VOUCHER_PREFIX = 'voucher';
-
-export async function getProgramAuthority(): Promise<StringPublicKey> {
-  const PROGRAM_IDS = programIds();
-
-  return (
-    await findProgramAddress(
-      [
-        Buffer.from(PACKS_PREFIX),
-        toPublicKey(PROGRAM_IDS.pack_create).toBuffer(),
-      ],
-      toPublicKey(PROGRAM_IDS.pack_create),
-    )
-  )[0];
-}
-
-export async function findPackCardProgramAddress(
-  pack: PublicKey,
-  index: BN,
-): Promise<StringPublicKey> {
-  return findProgramAddressByPrefix(pack, index, CARD_PREFIX);
-}
-
-export async function findPackVoucherProgramAddress(
-  pack: PublicKey,
-  index: BN,
-): Promise<StringPublicKey> {
-  return findProgramAddressByPrefix(pack, index, VOUCHER_PREFIX);
-}
-
-async function findProgramAddressByPrefix(
-  packSetKey: PublicKey,
-  index: BN,
-  prefix: string,
-): Promise<StringPublicKey> {
-  const PROGRAM_IDS = programIds();
-
-  return (
-    await findProgramAddress(
-      [
-        Buffer.from(prefix),
-        new PublicKey(packSetKey).toBuffer(),
-        new Uint8Array(numberToBytesArray(index.toNumber(), 4)),
-      ],
-      toPublicKey(PROGRAM_IDS.pack_create),
-    )
-  )[0];
-}
-
-function numberToBytesArray(number: number, length: number) {
-  return [...Array(length)].map((x, i) => (number >> i) & 1);
-}
 
 export class InitPackSetArgs {
   instruction = 0;
@@ -90,7 +34,7 @@ export class AddCardToPackArgs {
   instruction = 1;
   maxSupply: BN | null;
   weight: BN | null;
-  index: BN;
+  index: number;
 
   constructor(args: AddCardToPackParams) {
     this.maxSupply = args.maxSupply;
@@ -107,6 +51,30 @@ export class AddVoucherToPackArgs {
 
 export class ActivatePackArgs {
   instruction = 3;
+
+  constructor() {}
+}
+
+export class ClaimPackArgs {
+  instruction = 6;
+  index: number;
+
+  constructor(args: ClaimPackParams) {
+    this.index = args.index;
+  }
+}
+
+export class RequestCardToRedeemArgs {
+  instruction = 12;
+  index: number;
+
+  constructor(args: RequestCardToRedeemParams) {
+    this.index = args.index;
+  }
+}
+
+export class CleanUpArgs {
+  instruction = 13;
 
   constructor() {}
 }
@@ -150,6 +118,33 @@ export const PACKS_SCHEMA = new Map<any, any>([
   ],
   [
     ActivatePackArgs,
+    {
+      kind: 'struct',
+      fields: [['instruction', 'u8']],
+    },
+  ],
+  [
+    ClaimPackArgs,
+    {
+      kind: 'struct',
+      fields: [
+        ['instruction', 'u8'],
+        ['index', 'u32'],
+      ],
+    },
+  ],
+  [
+    RequestCardToRedeemArgs,
+    {
+      kind: 'struct',
+      fields: [
+        ['instruction', 'u8'],
+        ['index', 'u32'],
+      ],
+    },
+  ],
+  [
+    CleanUpArgs,
     {
       kind: 'struct',
       fields: [['instruction', 'u8']],
